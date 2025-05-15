@@ -1,0 +1,127 @@
+@model IEnumerable<Zainah_Nahool.Models.Product>
+@{
+    ViewData["Title"] = "إدارة المنتجات";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">إدارة المنتجات</h4>
+        <a href="@Url.Action("CreateProduct")" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            إضافة منتج جديد
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover" id="productsTable">
+                    <thead>
+                        <tr>
+                            <th>الصورة</th>
+                            <th>اسم المنتج</th>
+                            <th>الفئة</th>
+                            <th>السعر</th>
+                            <th>المخزون</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@Url.Content("~/images/shop/" + product.Image)" 
+                                         width="50" height="50" 
+                                         class="rounded" 
+                                         alt="@product.Name"
+                                         onerror="this.onerror=null;this.src='@Url.Content("~/images/shop/shop-1.jpg")';">
+                                </td>
+                                <td>@product.Name</td>
+                                <td>@product.Category?.Name</td>
+                                <td>$@product.Price.ToString("N0")</td>
+                                <td>
+                                    <span class="badge bg-@(product.StockQuantity > 10 ? "success" : product.StockQuantity > 0 ? "warning" : "danger")">
+                                        @product.StockQuantity
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-@(product.IsActive ? "success" : "danger")">
+                                        @(product.IsActive ? "متوفر" : "غير متوفر")
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="@Url.Action("EditProduct", new { id = product.Id })" 
+                                           class="btn btn-primary btn-sm px-3">
+                                            <i class="fas fa-edit"></i>
+                                            تعديل
+                                        </a>
+                                        <button type="button" 
+                                                class="btn btn-danger btn-sm px-3" 
+                                                onclick="confirmDelete(@product.Id)">
+                                            <i class="fas fa-trash"></i>
+                                            حذف
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal تأكيد الحذف -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">تأكيد الحذف</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                هل أنت متأكد من حذف هذا المنتج؟
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <form id="deleteForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#productsTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json'
+                },
+                order: [[1, 'desc']]
+            });
+        });
+
+        function confirmDelete(id) {
+            var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            var form = document.getElementById('deleteForm');
+            form.action = '@Url.Action("DeleteProduct")/' + id;
+            modal.show();
+        }
+    </script>
+} 

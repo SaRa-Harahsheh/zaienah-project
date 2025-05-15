@@ -1,0 +1,117 @@
+@model IEnumerable<Zainah_Nahool.Models.Feedback>
+@{
+    ViewData["Title"] = "إدارة المراجعات";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">إدارة المراجعات</h4>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>قائمة المراجعات</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">المستخدم</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">المنتج</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">التقييم</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">التعليق</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">تاريخ الإنشاء</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">الحالة</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div>
+                                                    @if (!string.IsNullOrEmpty(item.User?.ProfileImage))
+                                                    {
+                                                        <img src="~/images/users/@item.User.ProfileImage" class="avatar avatar-sm me-3" alt="user image">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/images/users/default-avatar.jpg" class="avatar avatar-sm me-3" alt="default">
+                                                    }
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">@item.User?.FirstName @item.User?.LastName</h6>
+                                                    <p class="text-xs text-secondary mb-0">@item.User?.Email</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">@item.Product?.Name</p>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                @for (int i = 0; i < item.Rating; i++)
+                                                {
+                                                    <i class="fas fa-star text-warning"></i>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs text-secondary mb-0">@item.Comment</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs text-secondary mb-0">@item.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</p>
+                                        </td>
+                                        <td>
+                                            @if(item.IsApproved)
+                                            {
+                                                <span class="badge bg-success">موافق عليها</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning">في انتظار الموافقة</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                @if (!item.IsApproved)
+                                                {
+                                                    <a href="@Url.Action("ApproveFeedback", new { id = item.Id })" class="btn btn-sm btn-success">
+                                                        <i class="fas fa-check"></i> موافقة
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("DisapproveFeedback", new { id = item.Id })" class="btn btn-sm btn-warning">
+                                                        <i class="fas fa-times"></i> إلغاء الموافقة
+                                                    </a>
+                                                }
+                                                <a href="@Url.Action("DeleteFeedback", new { id = item.Id })" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد من حذف هذه المراجعة؟');">
+                                                    <i class="fas fa-trash"></i> حذف
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

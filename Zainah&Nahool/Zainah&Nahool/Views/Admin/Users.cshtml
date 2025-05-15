@@ -1,0 +1,127 @@
+@model IEnumerable<Zainah_Nahool.Models.User>
+@{
+    ViewData["Title"] = "إدارة المستخدمين";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">إدارة المستخدمين</h4>
+        <div>
+            <button class="btn btn-outline-primary me-2">
+                <i class="fas fa-download"></i>
+                تصدير
+            </button>
+            <button class="btn btn-outline-success me-2">
+                <i class="fas fa-upload"></i>
+                استيراد
+            </button>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>رقم الهاتف</th>
+                            <th>تاريخ التسجيل</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                       
+                                        <div>
+                                            <div class="fw-bold">@user.FirstName @user.LastName</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@user.Email</td>
+                                <td>@user.Phone</td>
+                                <td>@user.CreatedAt?.ToString("yyyy/MM/dd")</td>
+                            @*     <td>
+                                    <span class="badge bg-@(user.IsActive ? "success" : "danger")">
+                                        @(user.IsActive ? "نشط" : "غير نشط")
+                                    </span>
+                                </td> *@
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="@Url.Action("EditUser", new { id = user.Id })" 
+                                           class="btn btn-primary btn-sm px-3">
+                                            <i class="fas fa-edit"></i>
+                                            تعديل
+                                        </a>
+                                        <button type="button" 
+                                                class="btn btn-danger btn-sm px-3" 
+                                                onclick="confirmDelete(@user.Id)">
+                                            <i class="fas fa-trash"></i>
+                                            حذف
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal تأكيد الحذف -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">تأكيد الحذف</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                هل أنت متأكد من حذف هذا المستخدم؟
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <form id="deleteForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#usersTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json'
+                },
+                order: [[0, 'desc']]
+            });
+        });
+
+        function confirmDelete(id) {
+            var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            var form = document.getElementById('deleteForm');
+            form.action = '@Url.Action("DeleteUser")/' + id;
+            modal.show();
+        }
+    </script>
+} 

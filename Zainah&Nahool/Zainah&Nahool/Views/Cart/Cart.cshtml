@@ -1,0 +1,431 @@
+﻿@model List<Zainah_Nahool.ViewModels.ProductCartItemView>
+
+
+
+
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "NavBar2";
+}
+
+
+
+<head>
+    <!-- Favicon -->
+    <!-- CSS (Font, Vendor, Icon, Plugins & Style CSS files) -->
+
+
+
+    <!-- Vendor CSS (Bootstrap & Icon Font) -->
+    <link rel="stylesheet" href="~/assets/css/vendor/bootstrap.min.css">
+
+    <!-- Plugins CSS (All Plugins Files) -->
+    <link rel="stylesheet" href="~/assets/css/plugins/swiper-bundle.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/font-awesome.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/fancybox.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/nice-select.css">
+
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="~/assets/css/style.min.css">
+
+
+
+    <title>ميليبونا - قالب HTML لمتجر العسل وتربية النحل</title>
+    <!-- أيقونة الموقع -->
+    <link rel="shortcut icon" href="~/images/favicon.png">
+    <!-- شريط التمرير -->
+    <link rel="stylesheet" href="~/css/simplebar.min.css">
+    <!-- بوتستراب -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <!-- كاروousel -->
+    <link rel="stylesheet" href="~/css/owl.carousel.css">
+    <!-- أنيميشن CSS -->
+    <link rel="stylesheet" href="~/css/animations.min.css">
+    <!-- أيقونات CSS -->
+    <link rel="stylesheet" href="~/fonts/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="~/fonts/flaticon/flaticon.css">
+    <link rel="stylesheet" href="~/fonts/flaticon-2/flaticon_mycollection.css">
+    <link rel="stylesheet" href="~/fonts/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="~/fonts/ionicons/ionicons.min.css">
+    <!-- نافذة منبثقة magnific -->
+    <link rel="stylesheet" href="~/css/magnific-popup.min.css">
+    <!--  CSS الرئيسي -->
+    <link rel="stylesheet" href="~/css/style.css">
+    <!-- CSS المتجاوب -->
+    <link rel="stylesheet" href="~/css/responsive.css">
+
+    <style>
+
+        body {
+        font-family: Arial, sans-serif;
+        background-color: white;
+        margin: 0;
+        padding: 0;
+        }
+
+        .page-header-title {
+        color: #FF948A;
+        font-size: 28px;
+        font-weight: bold;
+        }
+
+        .table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        }
+
+        .table th, .table td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+        background-color: #FFB606;
+        color: white;
+        font-weight: bold;
+        }
+
+        .product-thumbnail img {
+        border-radius: 8px;
+        }
+
+        .product-remove .remove {
+        background: none;
+        border: none;
+        font-size: 18px;
+        color: red;
+        cursor: pointer;
+        }
+
+        .pro-qty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+
+        .quantity-btn {
+        background-color: #FFB606;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        }
+
+        .quantity-btn:hover {
+        background-color: #af5911eb;
+        }
+
+        .cart-totals-wrap {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-totals-wrap h2 {
+        color: #FFB606;
+        margin-bottom: 15px;
+        }
+
+        .cart-totals-wrap table {
+        width: 100%;
+        }
+
+        .checkout-button {
+        background-color: #af5911eb;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        }
+
+        .checkout-button:hover {
+        background-color: #af5911eb;
+        }
+
+        .coupon-wrap {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-coupon {
+        background-color: #af5911eb;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        }
+
+        .btn-coupon:hover {
+        background-color: #af5911eb;
+        }
+
+
+        .btn-coupon[_ngcontent-ng-c187850835] {
+        padding: 4px 15px;
+        }
+
+
+        .checkout-button[_ngcontent-ng-c187850835] {
+        padding: -1px 20px;
+        }
+
+    </style>
+
+
+</head>
+
+
+<!-- بدء التحميل -->
+<!-- <div id="pq-loading">
+<div id="pq-loading-center">
+<img src="z.png" alt="تحميل">
+</div>
+</div> -->
+<!-- انتهاء التحميل -->
+<!-- بداية شريط التصفح -->
+<div class="pq-breadcrumb">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav aria-label="breadcrumb">
+                    <div class="pq-breadcrumb-title">
+                        <h1> السلة</h1>
+                    </div>
+                    <div class="pq-breadcrumb-container">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="index-2.html">
+                                    <i class="fas fa-home mr-2"></i>الرئيسية
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active">السلة</li>
+                        </ol>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- نهاية شريط التصفح -->
+<!--== بداية الغلاف ==-->
+<div class="wrapper">
+
+    <main class="main-content">
+
+
+        <!--== بداية غلاف منطقة المنتجات ==-->
+        <section class="section-space">
+            <div class="container">
+                <div class="shopping-cart-form table-responsive">
+                    <form asp-controller="Cart" asp-action="AddToCart">
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th class="product-remove">إزالة</th>
+                                    <th class="product-thumbnail">صورة</th>
+                                    <th class="product-name">المنتج</th>
+                                    <th class="product-price">السعر</th>
+                                    <th class="product-quantity">الكمية</th>
+                                    <th class="product-subtotal">الإجمالي</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="tbody-item">
+                                        <td class="product-remove">
+                                            <button class="remove" onclick="removeItem(this, @item.Id)">×</button>
+                                        </td>
+                                        <td class="product-thumbnail">
+                                            <div class="thumb">
+                                                <a href="@Url.Action("Details", "Product", new { id = item.ProductId })">
+                                                    <img src="/images/shop/@item.Image" width="68" height="84" alt="@item.Name">
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td class="product-name">@item.Name</td>
+                                        <td class="product-price">
+                                            <span class="price">@item.Price</span>
+                                        </td>
+                                        <td class="product-quantity">
+                                            <div class="pro-qty">
+                                                <button type="button" class="quantity-btn" onclick="changeQuantity(this, @item.ProductId, @item.Price, 'increase')">&#x2191;</button>
+                                                <input type="text" title="الكمية" value="@item.Quantity" readonly>
+                                                <button type="button" class="quantity-btn" onclick="changeQuantity(this, @item.ProductId , @item.Price, 'decrease')">&#x2193;</button>
+                                            </div>
+                                        </td>
+                                        <td class="product-subtotal">
+                                            <span class="price">@item.Total</span>
+                                        </td>
+                                    </tr>
+
+                                    <!--<tr class="tbody-item-actions">
+                                    <td colspan="6">
+                                    <button type="submit" class="btn-update-cart">تحديث السلة</button>
+                                    </td>
+                                    </tr>-->
+                                }
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="coupon-wrap">
+                            <h4 class="title">قسيمة الخصم</h4>
+                            <p class="desc">أدخل رمز القسيمة إذا كان لديك واحد.</p>
+                            <input type="text" class="form-control" [(ngModel)]="voucherCode" placeholder="رمز القسيمة">
+                            <button type="button" class="btn-coupon" (click)="applyVoucher()">تطبيق القسيمة</button>
+
+                            <!-- عرض تفاصيل القسيمة بعد التطبيق -->
+                            <div *ngIf="appliedVoucher" class="voucher-details">
+                                <p>✅ رمز القسيمة: <strong>{{ appliedVoucher.code }}</strong></p>
+                                <p>📉 نسبة الخصم: <strong>{{ discount }}%</strong></p>
+                                <p>💰 قيمة الخصم: <strong>{{ discountAmount | currency }}</strong></p>
+                            </div>
+
+                            <!-- عرض رسالة خطأ إذا كانت القسيمة غير صالحة -->
+                            <div *ngIf="errorMessage" class="error-message">
+                                <p>{{ errorMessage }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                        <div class="cart-totals-wrap">
+                            <h2 class="title">إجمالي السلة</h2>
+                            <table>
+                                <tbody>
+                                    <tr class="cart-subtotal">
+                                        <th>الإجمالي الفرعي</th>
+                                        <td><span class="amount">Total</span></td>
+                                    </tr>
+                                    <tr class="shipping-totals">
+                                        <th>الشحن</th>
+                                        <td>
+                                            <ul class="shipping-list">
+                                                <li class="radio">
+                                                    <input type="radio" name="shipping" id="radio1" checked>
+                                                    <label for="radio1">سعر ثابت: <span>$3.00</span></label>
+                                                </li>
+                                                <li class="radio">
+                                                    <input type="radio" name="shipping" id="radio2">
+                                                    <label for="radio2">شحن مجاني</label>
+                                                </li>
+                                                <li class="radio">
+                                                    <input type="radio" name="shipping" id="radio3">
+                                                    <label for="radio3">الاستلام من المتجر</label>
+                                                </li>
+                                            </ul>
+                                            <p class="destination">الشحن إلى <strong>USA</strong>.</p>
+                                        </td>
+                                    </tr>
+                                    <tr class="order-total">
+                                        <th>الإجمالي الكلي</th>
+                                        <td><span class="amount">final Total</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-end">
+                                <button class="checkout-button">
+                                    المتابعة إلى الدفع
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!--== نهاية غلاف منطقة المنتجات ==-->
+
+    </main>
+
+</div>
+<script>
+        // دالة لزيادة أو تقليل الكمية
+    function changeQuantity(button, itemId, unitPrice, action) {
+        const input = button.parentElement.querySelector('input');
+        let quantity = parseInt(input.value);
+
+        if (action === 'increase') {
+            quantity++;  // زيادة الكمية
+        } else if (action === 'decrease' && quantity > 1) {
+            quantity--;  // تقليل الكمية إذا كانت أكبر من 1
+        }
+
+        // تحديث قيمة الإدخال (input)
+        input.value = quantity;
+
+        // تحديث المجموع الفرعي بناءً على الكمية الجديدة
+        updateTotal(button, quantity, unitPrice);
+
+        // إرسال الكمية الجديدة إلى السيرفر
+        sendQuantityToServer(itemId, quantity);
+    }
+
+    // دالة لتحديث المجموع الفرعي للمنتج
+    function updateTotal(button, quantity, unitPrice) {
+        const subtotalElement = button.closest('tr').querySelector('.product-subtotal .price');
+        const total = (quantity * unitPrice).toFixed(2);
+        subtotalElement.textContent = total;
+    }
+
+    // دالة لإرسال الكمية إلى السيرفر
+       function sendQuantityToServer(itemId, quantity) {
+        fetch('/Cart/UpdateQuantity', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ itemId: itemId, quantity: quantity })  // استخدمي القيمة القادمة من البراميتر
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;  // تحويل للصفحة المطلوبة
+            } else {
+                console.log("تم تحديث الكمية بنجاح");
+            }
+        })
+        .catch(error => {
+            alert("فشل الاتصال بالسيرفر");
+            console.error("خطأ في الاتصال بالسيرفر:", error);
+        });
+    }
+
+
+    // دالة لحذف العنصر من السلة
+    function removeItem(button, itemId) {
+        const row = button.closest('tr');
+        row.remove();
+
+        fetch(`/Cart/RemoveFromCart?itemId=${itemId}`, {
+            method: 'POST'
+        })
+        .then(response => {
+            if (!response.ok) {
+                alert('حدث خطأ أثناء الحذف من السلة');
+            }
+        })
+        .catch(error => {
+            alert('فشل الاتصال بالخادم');
+            console.error(error);
+        });
+    }
+
+</script>

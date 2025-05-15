@@ -1,0 +1,297 @@
+@model Zainah_Nahool.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "لوحة التحكم";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <!-- إحصائيات سريعة -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="pq-counter-box">
+                <div class="pq-icon-bg">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="pq-counter-title">إجمالي المبيعات</div>
+                <div class="pq-counter-description">@("$" + (Model.TotalSales?.ToString("N0") ?? "0"))</div>
+                <div class="pq-counter-trend">
+                    <i class="fas fa-arrow-@(Model.SalesGrowth >= 0 ? "up" : "down")"></i>
+                    <span>@Math.Abs(Model.SalesGrowth).ToString("N1")%</span>
+                    <small>من الشهر الماضي</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="pq-counter-box">
+                <div class="pq-icon-bg">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="pq-counter-title">عدد الطلبات</div>
+                <div class="pq-counter-description">@Model.TotalOrders</div>
+                <div class="pq-counter-trend">
+                    <i class="fas fa-arrow-@(Model.OrdersGrowth >= 0 ? "up" : "down")"></i>
+                    <span>@Math.Abs(Model.OrdersGrowth).ToString("N1")%</span>
+                    <small>من الشهر الماضي</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="pq-counter-box">
+                <div class="pq-icon-bg">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="pq-counter-title">عدد المستخدمين</div>
+                <div class="pq-counter-description">@Model.TotalUsers</div>
+                <div class="pq-counter-trend">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>15%</span>
+                    <small>من الشهر الماضي</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="pq-counter-box">
+                <div class="pq-icon-bg">
+                    <i class="fas fa-box"></i>
+                </div>
+                <div class="pq-counter-title">المنتجات</div>
+                <div class="pq-counter-description">@Model.TotalProducts</div>
+                <div class="pq-counter-trend">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>5%</span>
+                    <small>من الشهر الماضي</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الرسوم البيانية -->
+    <div class="row mt-4">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold">المبيعات الشهرية</h6>
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="salesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            آخر 6 أشهر
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="salesDropdown">
+                            <li><a class="dropdown-item" href="#">آخر 3 أشهر</a></li>
+                            <li><a class="dropdown-item" href="#">آخر 6 أشهر</a></li>
+                            <li><a class="dropdown-item" href="#">آخر سنة</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="salesChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold">توزيع المبيعات</h6>
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="distributionDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            حسب المنتج
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="distributionDropdown">
+                            <li><a class="dropdown-item" href="#">حسب المنتج</a></li>
+                            <li><a class="dropdown-item" href="#">حسب الفئة</a></li>
+                            <li><a class="dropdown-item" href="#">حسب المنطقة</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="salesDistributionChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الطلبات الأخيرة -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold">الطلبات الأخيرة</h6>
+                    <div>
+                        <button class="btn btn-outline-primary btn-sm me-2">
+                            <i class="fas fa-download"></i>
+                            تصدير
+                        </button>
+                        <a href="/Admin/Orders" class="btn btn-primary btn-sm">عرض الكل</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>رقم الطلب</th>
+                                    <th>العميل</th>
+                                    <th>التاريخ</th>
+                                    <th>الحالة</th>
+                                    <th>المبلغ</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model.RecentOrders)
+                                {
+                                    <tr>
+                                        <td>#@order.OrderId</td>
+                                        <td>@order.CustomerName</td>
+                                        <td>@(order.OrderDate?.ToString("yyyy/MM/dd") ?? "-")</td>
+                                        <td>
+                                            <span class="badge bg-@(order.Status == "مكتمل" ? "success" : order.Status == "قيد المعالجة" ? "warning" : "danger")">
+                                                @order.Status
+                                            </span>
+                                        </td>
+                                        <td>@(order.TotalAmount?.ToString("N0") ?? "-")</td>
+                                        <td>
+                                            <a href="#" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
+                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- المنتجات الأكثر مبيعاً -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold">المنتجات الأكثر مبيعاً</h6>
+                    <div>
+                        <button class="btn btn-outline-primary btn-sm me-2">
+                            <i class="fas fa-download"></i>
+                            تصدير
+                        </button>
+                        <a href="/Admin/Products" class="btn btn-primary btn-sm">عرض الكل</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>المنتج</th>
+                                    <th>الصورة</th>
+                                    <th>السعر</th>
+                                    <th>المبيعات</th>
+                                    <th>المخزون</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model.TopProducts)
+                                {
+                                    <tr>
+                                        <td>@product.Name</td>
+                                        <td>
+                                            <img src="@Url.Content("~/images/shop/" + product.Image)" width="50" height="50" class="rounded" alt="@product.Name"
+                                                 onerror="this.onerror=null;this.src='@Url.Content("~/images/shop/shop-1.jpg")';">
+                                        </td>
+                                        <td>$@product.Price.ToString("N0")</td>
+                                        <td>@product.TotalSales</td>
+                                        <td>@product.StockQuantity</td>
+                                        <td>
+                                            <a href="#" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
+                                            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // رسم بياني للمبيعات الشهرية
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        new Chart(salesCtx, {
+            type: 'line',
+            data: {
+                labels: @Json.Serialize(Model.MonthlySales.Select(x => $"{x.Year}/{x.Month}")),
+                datasets: [{
+                    label: 'المبيعات',
+                    data: @Json.Serialize(Model.MonthlySales.Select(x => x.Total)),
+                    borderColor: '#FFB606',
+                    backgroundColor: 'rgba(255, 182, 6, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // رسم بياني دائري لتوزيع المبيعات
+        const distributionCtx = document.getElementById('salesDistributionChart').getContext('2d');
+        new Chart(distributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: @Json.Serialize(Model.SalesByProduct.Select(x => x.ProductName)),
+                datasets: [{
+                    data: @Json.Serialize(Model.SalesByProduct.Select(x => x.TotalSales)),
+                    backgroundColor: [
+                        '#FFB606',
+                        '#66340a',
+                        '#6A6A6A'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    </script>
+}

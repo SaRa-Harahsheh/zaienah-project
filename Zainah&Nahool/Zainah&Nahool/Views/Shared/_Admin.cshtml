@@ -1,0 +1,385 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - لوحة التحكم</title>
+
+    <!-- Favicon Icon -->
+    <link rel="shortcut icon" href="~/images/favicon.png">
+    <!-- Scrollbar -->
+    <link rel="stylesheet" href="~/css/simplebar.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <!-- Revolution Slider -->
+    <link rel="stylesheet" href="~/rev/css/rs6.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="~/css/owl.carousel.css">
+    <!-- Slick Slider -->
+    <link rel="stylesheet" href="~/css/slick.css">
+    <!-- Animation CSS -->
+    <link rel="stylesheet" href="~/css/animations.min.css">
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="~/fonts/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="~/fonts/flaticon/flaticon.css">
+    <link rel="stylesheet" href="~/fonts/flaticon-2/flaticon_mycollection.css">
+    <link rel="stylesheet" href="~/fonts/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="~/fonts/ionicons/ionicons.min.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="~/css/magnific-popup.min.css">
+    <!--  Style CSS -->
+    <link rel="stylesheet" href="~/css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="~/css/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Kufi+Arabic:wght@100..900&family=Reem+Kufi:wght@400..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FFB606;
+            --dark-color: #66340a;
+            --secondary-color: #6A6A6A;
+            --grey-color: #F7F7F7;
+            --white-color: #ffffff;
+        }
+
+        body {
+            font-family: "Noto Kufi Arabic", sans-serif;
+            background-color: var(--grey-color);
+            direction: rtl;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 280px;
+            background-color: var(--dark-color);
+            padding: 20px;
+            color: var(--white-color);
+            z-index: 1000;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header img {
+            max-width: 120px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            color: var(--white-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: var(--primary-color);
+            color: var(--dark-color);
+            transform: translateX(-5px);
+        }
+
+        .sidebar-menu a i {
+            margin-left: 10px;
+            font-size: 1.2em;
+        }
+
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+        }
+
+        .top-bar {
+            background-color: var(--white-color);
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+            border: 2px solid var(--primary-color);
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            background-color: var(--white-color);
+        }
+
+        .card-header {
+            background-color: var(--white-color);
+            border-bottom: 1px solid var(--grey-color);
+            padding: 15px 20px;
+        }
+
+        .card-header h6 {
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-color);
+            border-color: var(--dark-color);
+        }
+
+        .pq-counter-box {
+            background-color: var(--white-color);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .pq-counter-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .pq-counter-box .pq-icon-bg {
+            width: 70px;
+            height: 70px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            transition: all 0.3s;
+        }
+
+        .pq-counter-box:hover .pq-icon-bg {
+            transform: scale(1.1);
+            background-color: var(--dark-color);
+        }
+
+        .pq-counter-box .pq-icon-bg i {
+            color: var(--white-color);
+            font-size: 28px;
+        }
+
+        .pq-counter-box .pq-counter-title {
+            color: var(--secondary-color);
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .pq-counter-box .pq-counter-description {
+            color: var(--dark-color);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .pq-counter-box .pq-counter-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: #28a745;
+            font-size: 14px;
+        }
+
+        .pq-counter-box .pq-counter-trend i {
+            font-size: 12px;
+        }
+
+        .pq-counter-box .pq-counter-trend small {
+            color: var(--secondary-color);
+            margin-right: 5px;
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .dropdown-item {
+            padding: 8px 20px;
+            color: var(--dark-color);
+            transition: all 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--grey-color);
+            color: var(--primary-color);
+        }
+
+        .btn-link {
+            color: var(--dark-color);
+            text-decoration: none;
+            padding: 0;
+        }
+
+        .btn-link:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        @@media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            .main-content {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="~/loggo.png" alt="Logo" />
+            <h4>لوحة التحكم</h4>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="/Admin/Dashboard">
+                    <i class="fas fa-home"></i>
+                    الرئيسية
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Products">
+                    <i class="fas fa-box"></i>
+                    المنتجات
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Orders">
+                    <i class="fas fa-shopping-cart"></i>
+                    الطلبات
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Users">
+                    <i class="fas fa-users"></i>
+                    المستخدمين
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Feedbacks">
+                    <i class="fas fa-comments"></i>
+                    المراجعات
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Categories">
+                    <i class="fas fa-tags"></i>
+                    التصنيفات
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Reports">
+                    <i class="fas fa-chart-bar"></i>
+                    التقارير
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Settings">
+                    <i class="fas fa-cog"></i>
+                    الإعدادات
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="User" />
+                    <span>مرحباً، المدير</span>
+                </div>
+                <div>
+                    <a href="/" class="btn btn-outline-primary">
+                        <i class="fas fa-sign-out-alt"></i>
+                        تسجيل الخروج
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Content -->
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
